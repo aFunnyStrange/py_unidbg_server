@@ -1,12 +1,16 @@
 ## py_unidbg_server
 
 `py_unidbg_server` is a Python-based JVM microservice that uses **jpype1** to invoke Java methods from `.jar` files. It runs a **FastAPI** service via **Gunicorn + Uvicorn** for local calls.
+
 The architecture is designed as a **per-machine self-contained deployment**, intended to be configured and run on the same machine as the client. By default, it does **not rely on message queues (MQ)—clients** can directly call the service locally.
+
 In this way, the service can be combined with the machine’s original program as a **single complete project**, supporting **one-click packaging and easy deployment** without the extra configuration required by MQ-based solutions.
 
 **Advantages over the GitHub `unidbg-server` project:**
-1.Pure **Python** code – no need to dive into **Java Spring Boot**. You only need to build your unidbg project and expose the interfaces; the microservice can integrate directly.
-2.**Infinite scalability** per launch – once the core unidbg libraries are loaded, new project interfaces only need their own JARs. You do not need to restart the service.
+
+1. Pure **Python** code – no need to dive into **Java Spring Boot**. You only need to build your unidbg project and expose the interfaces; the microservice can integrate directly.
+
+2. **Infinite scalability** per launch – once the core unidbg libraries are loaded, new project interfaces only need their own JARs. You do not need to restart the service.
 
 ## 📦 Installation
 #### From PyPI
@@ -55,27 +59,27 @@ The service **does not load JARs immediately** upon startup.
 JARs are loaded **lazily on first method invocation**, and then **cached and reused** for all subsequent calls.
 
 **Recommended workflow:**
-1.Download and package all unidbg core JARs.
+1. Download and package all unidbg core JARs.
 
-2.(Optional) Download additional dependencies such as **Gson** if your Java methods require JSON serialization/deserialization.
+2. (Optional) Download additional dependencies such as **Gson** if your Java methods require JSON serialization/deserialization.
 
 - **GitHub repository:** https://github.com/google/gson
 
 - **Maven Central:** https://mvnrepository.com/artifact/com.google.code.gson/gson
 
 - **How to get the JAR:**
-    1.Check the GitHub releases to find the latest version.
+    1. Check the GitHub releases to find the latest version.
 
-    2.Go to the Maven Central page and select the desired version.
+    2. Go to the Maven Central page and select the desired version.
 
-    3.If the version is not listed on the page, you can directly modify the URL to download it, e.g.:
+    3. If the version is not listed on the page, you can directly modify the URL to download it, e.g.:
     ```bash
     https://repo1.maven.org/maven2/com/google/code/gson/gson/<version>/gson-<version>.jar
     ```
 
-    4.Download the JAR and place it in your project folder.
+    4. Download the JAR and place it in your project folder.
 
-    5.Add Gson to your project (Maven example):
+    5. Add Gson to your project (Maven example):
     ``` xml
     <dependencies>
         <dependency>
@@ -92,9 +96,9 @@ JARs are loaded **lazily on first method invocation**, and then **cached and reu
 
 - JSON is optional – you may choose another request format as long as the client and server agree on it.
 
-3.Create your own project, implement Java methods, and package your JAR (without core dependencies).
+3. Create your own project, implement Java methods, and package your JAR (without core dependencies).
 
-4.Start the server via the CLI and make requests.
+4. Start the server via the CLI and make requests.
 
 **Notes:**
 The microservice is intentionally simple – it only provides a JVM execution environment and HTTP API for Java method calls.
